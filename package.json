@@ -1,0 +1,22 @@
+{
+  "name": "node_js_webscraper",
+  "version": "1.0.0",
+  "description": "CNET webscraper. Returns key information on five latest stories",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rokmokorel/node_js_webscraper.git"
+  },
+  "author": "Rok Mokorel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rokmokorel/node_js_webscraper/issues"
+  },
+  "homepage": "https://github.com/rokmokorel/node_js_webscraper#readme",
+  "dependencies": {
+    "puppeteer": "^5.2.1"
+  }
+}
