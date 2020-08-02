@@ -1,0 +1,41 @@
+5 LATEST STORIES
+(MAINSITE)
+seznam = document.querySelectorAll('div[class="latestScrollItems"] > div[class="row item"] > .col-5 > .col-4 > h3 > a')
+list[a, a, ...]
+
+•	News header
+(MAINSITE)
+seznam[i].text
+
+•	A short summary of the article
+(SUBSITE)
+document.querySelector('p[class="c-head_dek"]')
+
+•	Category in which the story was published
+Is determined from the url, after .com and article title
+https://www.cnet.com/personal-finance/next-stimulus-package-heals-act-benefits-go-even-beyond-another-payment/
+
+•	Tags with which the story is tagged
+(SUBSITE)
+tagi = document.querySelectorAll('div[class="row tagList desktop"] > a')
+
+•	Author of the story
+(SUBSITE)
+avtorji = document.querySelectorAll('div[class="c-assetAuthor_authors"] > span > .author')
+autorji[0].text
+
+•	URL to the story
+seznam = document.querySelectorAll('div[class="latestScrollItems"] > div[class="row item"] > .col-5 > .col-4 > h3 > a')
+seznam[i].href
+
+•	When the story was published
+(SUBSITE)
+datum = document.querySelector('div[class="c-assetAuthor_date"] > time')
+
+•	URL to the main image in the article
+(SUBSITE)
+slika = document.querySelector('article[id="article-body"] > div[class="col-7 article-main-body row "] > figure[class="image image-large pull-none hasCaption shortcode"] > .imageContainer > span > img')
+
+
+•	URL to full page screenshot image of story (optional)
+•	URL to PDF file of print of story (optional)
