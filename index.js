@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer');
 const CNET_URL = `https://www.cnet.com/`;
 
+function extractCategory(url) {
+    return url;
+}
 
 (async () => {
     /* Initiate the Puppeteer browser */
@@ -15,12 +18,19 @@ const CNET_URL = `https://www.cnet.com/`;
         var titleNodeList = document.querySelectorAll('div[class="latestScrollItems"] > div[class="row item"] > .col-5 > .col-4 > h3 > a');
         var titleLinkArray = [];
         for (var i = 0; i < 5; i++) {
-          titleLinkArray[i] = {
-            title: titleNodeList[i].innerText
-          };
+            titleLinkArray[i] = {
+                newsHeader: titleNodeList[i].innerText,
+                shortSummary: null,
+                category: titleNodeList[i].href.replace("https://www.cnet.com/", "").split('/')[0],
+                tags: null,
+                author: null,
+                url: titleNodeList[i].href,
+                datePublished: null,
+                mainImageUrl: null
+            };
         }
         return titleLinkArray;
-      });
+    });
 
     /* Outputting what we scraped */
     console.log(news);
