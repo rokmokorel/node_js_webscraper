@@ -5,18 +5,18 @@ const { resolve } = require('path');
 const CNET_URL = `https://www.cnet.com/`;
 
 function scrapeForData() {
-  /* immediately invoked function expression */
+  /* the scraping result has to be obtained before server response, solution is Promise-resolve action */
   return new Promise(
     resolve => {
+      /* immediately invoked function expression */
       var scrapeResult = (async () => {
         try {
           /* Initiate the Puppeteer browser */
           const browser = await puppeteer.launch();
           const page = await browser.newPage();
-      
-          /* Go to the webpage and wait for it to load */
+
+          /* Go to the mainpage and wait for it to load */
           await page.goto(CNET_URL, { waitUntil: 'networkidle0' });
-      
           /* Run javascript inside of the page */
           var mainPageData = await page.evaluate(() => {
             var storiesNodeList = document.querySelectorAll('div[class="latestScrollItems"] > div[class="row item"] > .col-5 > .col-4 > h3 > a');
@@ -31,6 +31,7 @@ function scrapeForData() {
             }
             return storiesArray;
           });
+
           /*  variable to hold scraped data from subpages  */
           var subPageData = [];
           /* Iterate links to subpages of 5 latest stories */
@@ -66,7 +67,7 @@ function scrapeForData() {
                 } catch (err) {
                   var mainImageUrl = "";
                 }
-      
+
                 /* combine scraped data from subpages */
                 subStoriesArray = {
                   shortSummary: shortSummary,
@@ -75,15 +76,16 @@ function scrapeForData() {
                   datePublished: datePublished,
                   mainImageUrl: mainImageUrl
                 };
-      
+
                 return subStoriesArray;
-      
+
               });
             } catch (err) {
               console.log(err);
             }
           }
-          /* merge collected data from main and subsites into object */
+
+          /* merge collected data from main and subpages into new javascript object */
           allPageData = {};
           for (var i = 0; i < 5; i++) {
             allPageData["article " + String(i + 1)] = {
@@ -91,22 +93,26 @@ function scrapeForData() {
               ...subPageData[i],
             }
           };
-      
-          /* Log the results */
+
           await browser.close();
         }
+
+        /* close browser if scraping unsuccessful */
         catch (err) {
           console.log(err);
           await browser.close();
         }
+
+        /* final result*/
         return allPageData;
       })();  // end of immediately invoked function expression
+      /* scrapeResult is obrained before other processes can advance*/
       resolve(scrapeResult);
     });
 }
 
 /* setup of the nodeJS server on localhost */
-/*  */
+/* localhost at port 5060 */
 const hostname = '127.0.0.1';
 const port = 5060;
 
