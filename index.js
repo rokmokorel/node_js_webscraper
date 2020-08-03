@@ -27,37 +27,57 @@ const CNET_URL = `https://www.cnet.com/`;
         });
         /* Iterate links to 5 latest stories and collect data from subpages */
         var subPageData = [];
-        for (var i = 0; i < 2; i++) {
+        // TODO : increase the number of iterations to the number of stories
+        for (var i = 0; i < 5; i++) {
             try {
                 await page.goto(mainPageData[i].url);
                 console.log('Opened page:  ', mainPageData[i].url);
                 subPageData[i] = await page.evaluate(() => {
-                    var subStoriesArray = [];
                     /* use devtools API to get data */
-                    var shortSummary = document.querySelector('p[class="c-head_dek"]');
-                    var tags = Array.from(document.querySelectorAll('div[class="row tagList desktop"] > a'), x => x.innerText);
-                    var author = Array.from(document.querySelectorAll('div[class="c-assetAuthor_authors"] > span > .author'), x => x.innerText);
-                    var datePublished = document.querySelector('div[class="c-assetAuthor_date"] > time');
-                    var mainImageUrl = document.querySelector('article[id="article-body"] > div[class="col-7 article-main-body row "] > figure[class="image image-large pull-none hasCaption shortcode"] > .imageContainer > span > img');
+                    /* TODO  : Handle video stories, handle */
+                    try {
+                        var shortSummary = document.querySelector('p[class="c-head_dek"]').innerText;
+                        var tags = Array.from(document.querySelectorAll('div[class="row tagList desktop"] > a'), x => x.innerText);
+                        var author = Array.from(document.querySelectorAll('div[class="c-assetAuthor_authors"] > span > .author'), x => x.innerText);
+                        var datePublished = document.querySelector('div[class="c-assetAuthor_date"] > time').innerText;
+                        var mainImageUrl = document.querySelector('article > div > figure[section="shortcodeImage"] > span > span > img').src;
+                    } catch (TypeError) {
+                        var shortSummary = "";
+                        var tags = [""];
+                        var author = [""];
+                        var datePublished = "";
+                        var mainImageUrl = "";
+                    }
+
                     /* save scraped data from subpages */
-                    
-                    subStoriesArray[i] = {
-                        shortSummary: shortSummary.innerText,
+                    subStoriesArray = {
+                        shortSummary: shortSummary,
                         tags: tags.join(' | '),
                         author: author.join(' | '),
+                        datePublished: datePublished,
+                        mainImageUrl: mainImageUrl
                     };
 
                     return subStoriesArray;
-                
+
                 });
             } catch (err) {
                 console.log(err);
             }
         }
+        /* merge collected data from main and subsites into one array */
+        data = [];
+        for (var i = 0; i < 5; i++) {
+            data[i] = {
+              ...mainPageData[i],
+              ...subPageData[i],
+          }
+        };
 
         /* Log the results */
         // console.log(mainPageData);
-        console.log(subPageData);
+        // console.log(subPageData);
+        console.log(data);
         await browser.close();
 
     }

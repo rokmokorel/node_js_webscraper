@@ -34,8 +34,11 @@ datum = document.querySelector('div[class="c-assetAuthor_date"] > time')
 
 •	URL to the main image in the article
 (SUBSITE)
-slika = document.querySelector('article[id="article-body"] > div[class="col-7 article-main-body row "] > figure[class="image image-large pull-none hasCaption shortcode"] > .imageContainer > span > img')
+slika = document.querySelector('article[id="article-body"] > div[class="col-7 article-main-body row "] > div[section="listicle"] > div[section="article-body|listicle|image"] > a > figure > img')
 
+document.querySelector('div[class="col-7 contentBody"] > article > div > figure[section="shortcodeImage"] > span > span > img')
+
+document.querySelector('article > div > figure[section="shortcodeImage"] > span > span > img')
 
 •	URL to full page screenshot image of story (optional)
 •	URL to PDF file of print of story (optional)
